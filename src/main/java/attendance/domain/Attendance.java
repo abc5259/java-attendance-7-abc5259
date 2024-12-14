@@ -43,7 +43,9 @@ public class Attendance {
     public AttendanceUpdateResponse updateAttendance(Crew crew, LocalDateTime updateDateTime) {
         List<LocalDateTime> dateTimes = attendances.get(crew);
 
-        LocalDateTime prevDateTime = findDateTime(updateDateTime, dateTimes);
+        Optional<LocalDateTime> optionalDateTime = findOptionalDateTime(updateDateTime.toLocalDate(), dateTimes);
+        LocalDateTime prevDateTime = optionalDateTime.orElseGet(
+                () -> LocalDateTime.of(updateDateTime.toLocalDate(), LocalTime.MIN));
         List<LocalDateTime> newDateTimes = dateTimes.stream()
                 .filter(dateTime -> !dateTime.toLocalDate().isEqual(updateDateTime.toLocalDate()))
                 .collect(Collectors.toList());

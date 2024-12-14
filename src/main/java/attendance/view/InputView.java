@@ -21,6 +21,7 @@ public class InputView {
     }
 
     public String inputCrewName() {
+        System.out.println();
         System.out.println(INPUT_CREW_NAME);
         return Console.readLine();
     }

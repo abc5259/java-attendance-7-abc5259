@@ -21,6 +21,7 @@ public class OutputView {
     private static final String ATTENDANCE_STATE_FORMAT = "%d월 %02d일 %s %02d:%02d (%s)%n";
     private static final String ATTENDANCE_ABSENCE_STATE_FORMAT = "%d월 %02d일 %s --:-- (결석)%n";
     private static final String ATTENDANCE_UPDATE_STATE_FORMAT = "%d월 %02d일 %s %02d:%02d (%s) -> %02d:%02d (%s) 수정 완료!%n";
+    private static final String ABSENCE_ATTENDANCE_UPDATE_STATE_FORMAT = "%d월 %02d일 %s --:-- (결석) -> %02d:%02d (%s) 수정 완료!%n";
 
     public void printHelloMessage(LocalDateTime dateTime) {
 
@@ -65,6 +66,18 @@ public class OutputView {
         printEmptyLine();
         AttendanceResult prevAttendanceResult = attendanceUpdateResponse.prevAttendanceResult();
         AttendanceResult updateAttendanceResult = attendanceUpdateResponse.updateAttendanceResult();
+        if (prevAttendanceResult.dateTime().toLocalTime() == LocalTime.MIN) {
+            System.out.printf(
+                    ABSENCE_ATTENDANCE_UPDATE_STATE_FORMAT,
+                    prevAttendanceResult.dateTime().getMonth().getValue(),
+                    prevAttendanceResult.dateTime().getDayOfMonth(),
+                    DayUtils.toKorDayOfWeek(prevAttendanceResult.dateTime().getDayOfWeek()),
+                    updateAttendanceResult.dateTime().getHour(),
+                    updateAttendanceResult.dateTime().getMinute(),
+                    toMessageAttendanceState(updateAttendanceResult.attendanceState())
+            );
+            return;
+        }
         System.out.printf(
                 ATTENDANCE_UPDATE_STATE_FORMAT,
                 prevAttendanceResult.dateTime().getMonth().getValue(),
