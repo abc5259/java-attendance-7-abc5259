@@ -66,13 +66,31 @@ public class IteratorInputHandler {
         );
     }
 
-    public Crew inputAttendanceUpdateCrew(Attendance attendance, LocalDate date) {
+    public Crew inputAttendanceUpdateCrew(Attendance attendance) {
         return iteratorInputTemplate.execute(
                 inputView::inputAttendanceUpdateCrewName,
                 value -> {
                     Crew crew = new Crew(value);
-                    attendance.validateAttendanceCrew(crew, date);
+                    attendance.validateContainsCrew(crew);
                     return crew;
+                }
+        );
+    }
+
+    public LocalDate inputAttendanceUpdateDayInMonth(LocalDate currentDate) {
+        return iteratorInputTemplate.execute(
+                inputView::inputAttendanceUpdateDayInMonth,
+                value -> {
+                    try {
+                        int day = Integer.parseInt(value);
+                        LocalDate updateDate = LocalDate.of(currentDate.getYear(), currentDate.getMonth(), day);
+                        if (updateDate.isAfter(currentDate)) {
+                            throw new IllegalArgumentException("아직 수정할 수 없습니다.");
+                        }
+                        return updateDate;
+                    } catch (NumberFormatException exception) {
+                        throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
+                    }
                 }
         );
     }

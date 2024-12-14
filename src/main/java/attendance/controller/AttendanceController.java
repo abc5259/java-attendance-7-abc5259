@@ -5,6 +5,7 @@ import attendance.domain.AttendanceState;
 import attendance.domain.Crew;
 import attendance.domain.Menu;
 import attendance.view.OutputView;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class AttendanceController {
@@ -27,7 +28,9 @@ public class AttendanceController {
             outputView.printAttendanceState(goingSchoolDateTIme, attendanceState);
         }
         if (menu == Menu.ATTENDANCE_UPDATE) {
-            Crew crew = iteratorInputHandler.inputAttendanceUpdateCrew(attendance, dateTime.toLocalDate());
+            Crew crew = iteratorInputHandler.inputAttendanceUpdateCrew(attendance);
+            LocalDate updateDate = iteratorInputHandler.inputAttendanceUpdateDayInMonth(dateTime.toLocalDate());
+
         }
     }
 }

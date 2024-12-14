@@ -24,6 +24,12 @@ public class Attendance {
         }
     }
 
+    public void validateContainsCrew(Crew crew) {
+        if (!attendances.containsKey(crew)) {
+            throw new IllegalArgumentException("등록되지 않은 닉네임입니다.");
+        }
+    }
+
     public AttendanceState attendanceCrew(Crew crew, LocalDateTime attendanceDatTime) {
         attendances.get(crew).add(attendanceDatTime);
 
