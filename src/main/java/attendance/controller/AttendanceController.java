@@ -7,6 +7,7 @@ import attendance.domain.AttendanceUpdateResponse;
 import attendance.domain.Campus;
 import attendance.domain.Crew;
 import attendance.domain.Menu;
+import attendance.domain.SubjectCalculator;
 import attendance.view.OutputView;
 import java.time.LocalDateTime;
 
@@ -46,7 +47,8 @@ public class AttendanceController {
                     dateTime.getYear(),
                     dateTime.getMonthValue(),
                     dateTime.toLocalDate());
-            outputView.printAttendanceHistory(attendanceHistory);
+            SubjectCalculator subjectCalculator = new SubjectCalculator(attendanceHistory);
+            outputView.printAttendanceHistory(attendanceHistory, subjectCalculator.calculateSubject());
         }
     }
 }

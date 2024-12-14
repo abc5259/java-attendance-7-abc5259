@@ -4,6 +4,7 @@ import attendance.domain.AttendanceHistory;
 import attendance.domain.AttendanceResult;
 import attendance.domain.AttendanceState;
 import attendance.domain.AttendanceUpdateResponse;
+import attendance.domain.Subject;
 import attendance.utils.DayUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -73,7 +74,7 @@ public class OutputView {
         );
     }
 
-    public void printAttendanceHistory(AttendanceHistory attendanceHistory) {
+    public void printAttendanceHistory(AttendanceHistory attendanceHistory, Subject subject) {
         List<AttendanceResult> attendanceResults = attendanceHistory.getAttendanceResults();
         System.out.println("이번 달 빙티의 출석 기록입니다.");
         printEmptyLine();
@@ -104,7 +105,12 @@ public class OutputView {
         System.out.printf("출석: %d회%n", attendanceHistory.totalAttendance());
         System.out.printf("지각: %d회%n", attendanceHistory.totalLate());
         System.out.printf("결석: %d회%n", attendanceHistory.totalAbsence());
+        printEmptyLine();
 
+        if (subject == Subject.NONE) {
+            return;
+        }
 
+        System.out.printf("%s 대상자입니다.%n", subject.getName());
     }
 }
