@@ -10,11 +10,11 @@ import attendance.domain.Holiday;
 import attendance.domain.Menu;
 import attendance.utils.DayUtils;
 import attendance.view.InputView;
+import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class IteratorInputHandler {
 
@@ -59,7 +59,7 @@ public class IteratorInputHandler {
                     try {
                         return LocalDateTime.parse(
                                 currentDate.toString() + " " + value.trim(), DATE_TIME_FORMATTER);
-                    } catch (DateTimeParseException exception) {
+                    } catch (DateTimeException exception) {
                         throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
                     }
                 }
@@ -77,7 +77,22 @@ public class IteratorInputHandler {
         );
     }
 
-    public LocalDate inputAttendanceUpdateDayInMonth(LocalDate currentDate) {
+    public LocalDateTime inputAttendanceUpdateDateTime(LocalDate currentDate) {
+        LocalDate updateDate = inputAttendanceUpdateDayInMonth(currentDate);
+        return iteratorInputTemplate.execute(
+                inputView::inputAttendanceUpdateTime,
+                value -> {
+                    try {
+                        return LocalDateTime.parse(
+                                updateDate.toString() + " " + value.trim(), DATE_TIME_FORMATTER);
+                    } catch (DateTimeException dateTimeException) {
+                        throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
+                    }
+                }
+        );
+    }
+
+    private LocalDate inputAttendanceUpdateDayInMonth(LocalDate currentDate) {
         return iteratorInputTemplate.execute(
                 inputView::inputAttendanceUpdateDayInMonth,
                 value -> {
@@ -88,7 +103,7 @@ public class IteratorInputHandler {
                             throw new IllegalArgumentException("아직 수정할 수 없습니다.");
                         }
                         return updateDate;
-                    } catch (NumberFormatException exception) {
+                    } catch (NumberFormatException | DateTimeException exception) {
                         throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
                     }
                 }
