@@ -10,8 +10,12 @@ import attendance.domain.Menu;
 import attendance.view.InputView;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class IteratorInputHandler {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private final InputView inputView;
     private final IteratorInputTemplate iteratorInputTemplate;
@@ -41,6 +45,20 @@ public class IteratorInputHandler {
                     Crew crew = new Crew(value);
                     attendance.validateAttendanceCrew(crew, date);
                     return crew;
+                }
+        );
+    }
+
+    public LocalDateTime inputGoingSchoolDateTime(LocalDate currentDate) {
+        return iteratorInputTemplate.execute(
+                inputView::inputGoingSchoolTime,
+                value -> {
+                    try {
+                        return LocalDateTime.parse(
+                                currentDate.toString() + " " + value.trim(), DATE_TIME_FORMATTER);
+                    } catch (DateTimeParseException exception) {
+                        throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
+                    }
                 }
         );
     }

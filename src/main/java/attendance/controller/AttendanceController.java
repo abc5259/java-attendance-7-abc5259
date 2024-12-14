@@ -25,6 +25,7 @@ public class AttendanceController {
         Menu menu = iteratorInputHandler.inputMenu(dateTime);
         if (menu == Menu.ATTENDANCE_INSERT) {
             Crew crew = iteratorInputHandler.inputCrew(attendance, dateTime.toLocalDate());
+            LocalDateTime goingSchoolDateTIme = iteratorInputHandler.inputGoingSchoolDateTime(dateTime.toLocalDate());
         }
     }
 
