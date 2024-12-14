@@ -1,6 +1,7 @@
 package attendance.domain;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public enum Late {
@@ -18,6 +19,10 @@ public enum Late {
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public static AttendanceState calculateAttendanceState(LocalDateTime dateTime) {
+        return calculateAttendanceState(dateTime.getDayOfWeek(), new Time(dateTime.getHour(), dateTime.getMinute()));
     }
 
     public static AttendanceState calculateAttendanceState(DayOfWeek dayOfWeek, Time time) {

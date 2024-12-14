@@ -2,6 +2,7 @@ package attendance.controller;
 
 import attendance.domain.Attendance;
 import attendance.domain.AttendanceState;
+import attendance.domain.AttendanceUpdateResponse;
 import attendance.domain.Campus;
 import attendance.domain.Crew;
 import attendance.domain.Menu;
@@ -33,7 +34,8 @@ public class AttendanceController {
             Crew crew = iteratorInputHandler.inputAttendanceUpdateCrew(attendance);
             LocalDateTime updateDateTime = iteratorInputHandler.inputAttendanceUpdateDateTime(dateTime.toLocalDate(),
                     campus);
-
+            AttendanceUpdateResponse attendanceUpdateResponse = attendance.updateAttendance(crew, updateDateTime);
+            outputView.printAttendanceUpdateResponse(attendanceUpdateResponse);
         }
     }
 }

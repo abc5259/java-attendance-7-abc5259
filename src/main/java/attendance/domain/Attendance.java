@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Attendance {
 
@@ -32,10 +33,30 @@ public class Attendance {
 
     public AttendanceState attendanceCrew(Crew crew, LocalDateTime attendanceDatTime) {
         attendances.get(crew).add(attendanceDatTime);
+        return Late.calculateAttendanceState(attendanceDatTime);
+    }
 
-        int hour = attendanceDatTime.getHour();
-        int minute = attendanceDatTime.getMinute();
-        return Late.calculateAttendanceState(attendanceDatTime.getDayOfWeek(), new Time(hour, minute));
+    public AttendanceUpdateResponse updateAttendance(Crew crew, LocalDateTime updateDateTime) {
+        List<LocalDateTime> dateTimes = attendances.get(crew);
+
+        LocalDateTime prevDateTime = findDateTime(updateDateTime, dateTimes);
+        List<LocalDateTime> newDateTimes = dateTimes.stream()
+                .filter(dateTime -> !dateTime.toLocalDate().isEqual(updateDateTime.toLocalDate()))
+                .collect(Collectors.toList());
+        newDateTimes.add(updateDateTime);
+        attendances.put(crew, newDateTimes);
+
+        return new AttendanceUpdateResponse(
+                new AttendanceResult(prevDateTime, Late.calculateAttendanceState(prevDateTime)),
+                new AttendanceResult(updateDateTime, Late.calculateAttendanceState(updateDateTime))
+        );
+    }
+
+    private LocalDateTime findDateTime(LocalDateTime updateDateTime, List<LocalDateTime> dateTimes) {
+        return dateTimes.stream()
+                .filter(dateTime -> dateTime.toLocalDate().isEqual(updateDateTime.toLocalDate()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 요일이 없습니다."));
     }
 
     private boolean isAlreadyAttendance(LocalDate date, List<LocalDateTime> dateTimes) {
