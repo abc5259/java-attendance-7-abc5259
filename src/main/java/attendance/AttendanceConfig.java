@@ -1,8 +1,8 @@
 package attendance;
 
 import attendance.controller.AttendanceController;
-import attendance.controller.IteratorInputHandler;
-import attendance.controller.IteratorInputTemplate;
+import attendance.controller.InputHandler;
+import attendance.controller.InputTemplate;
 import attendance.io.AttendanceInit;
 import attendance.io.FileReader;
 import attendance.view.InputView;
@@ -12,8 +12,8 @@ public class AttendanceConfig {
 
     private InputView inputView;
     private OutputView outputView;
-    private IteratorInputTemplate iteratorInputTemplate;
-    private IteratorInputHandler iteratorInputHandler;
+    private InputTemplate inputTemplate;
+    private InputHandler inputHandler;
     private AttendanceController attendanceController;
     private FileReader fileReader;
     private AttendanceInit attendanceInit;
@@ -32,18 +32,18 @@ public class AttendanceConfig {
         return outputView;
     }
 
-    public IteratorInputTemplate iteratorInputTemplate() {
-        if (iteratorInputTemplate == null) {
-            iteratorInputTemplate = new IteratorInputTemplate(outputView());
+    public InputTemplate iteratorInputTemplate() {
+        if (inputTemplate == null) {
+            inputTemplate = new InputTemplate();
         }
-        return iteratorInputTemplate;
+        return inputTemplate;
     }
 
-    public IteratorInputHandler iteratorInputHandler() {
-        if (iteratorInputHandler == null) {
-            iteratorInputHandler = new IteratorInputHandler(inputView(), iteratorInputTemplate());
+    public InputHandler iteratorInputHandler() {
+        if (inputHandler == null) {
+            inputHandler = new InputHandler(inputView(), iteratorInputTemplate());
         }
-        return iteratorInputHandler;
+        return inputHandler;
     }
 
     public AttendanceController attendanceController() {

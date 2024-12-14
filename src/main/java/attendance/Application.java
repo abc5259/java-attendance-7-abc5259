@@ -16,10 +16,11 @@ public class Application {
 
         Attendance attendance = attendanceInit.init();
         AttendanceController attendanceController = attendanceConfig.attendanceController();
-        attendanceController.process(attendance, LocalDateTime.of(2024, 12, 13, 14, 2));
+        LocalDateTime localDateTime = LocalDateTime.of(2024, 12, 13, 14, 2);
+        attendanceController.process(attendance, getDateTime());
     }
 
-    private LocalDateTime getDateTime() {
+    private static LocalDateTime getDateTime() {
         LocalDate localDate = DateTimes.now().toLocalDate();
         LocalTime localTime = DateTimes.now().toLocalTime();
         return LocalDateTime.of(localDate, localTime);

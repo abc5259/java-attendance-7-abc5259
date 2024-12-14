@@ -13,35 +13,35 @@ import java.time.LocalDateTime;
 
 public class AttendanceController {
 
-    private final IteratorInputHandler iteratorInputHandler;
+    private final InputHandler inputHandler;
     private final OutputView outputView;
 
-    public AttendanceController(IteratorInputHandler iteratorInputHandler, OutputView outputView) {
-        this.iteratorInputHandler = iteratorInputHandler;
+    public AttendanceController(InputHandler inputHandler, OutputView outputView) {
+        this.inputHandler = inputHandler;
         this.outputView = outputView;
     }
 
     public void process(Attendance attendance, LocalDateTime dateTime) {
         outputView.printHelloMessage(dateTime);
         Campus campus = new Campus();
-        Menu menu = iteratorInputHandler.inputMenu(dateTime);
+        Menu menu = inputHandler.inputMenu(dateTime);
         if (menu == Menu.ATTENDANCE_INSERT) {
-            Crew crew = iteratorInputHandler.inputCrew(attendance, dateTime.toLocalDate());
-            LocalDateTime goingSchoolDateTIme = iteratorInputHandler.inputGoingSchoolDateTime(dateTime.toLocalDate(),
+            Crew crew = inputHandler.inputCrew(attendance, dateTime.toLocalDate());
+            LocalDateTime goingSchoolDateTIme = inputHandler.inputGoingSchoolDateTime(dateTime.toLocalDate(),
                     campus);
             AttendanceState attendanceState = attendance.attendanceCrew(crew, goingSchoolDateTIme);
             outputView.printAttendanceState(goingSchoolDateTIme, attendanceState);
         }
         if (menu == Menu.ATTENDANCE_UPDATE) {
-            Crew crew = iteratorInputHandler.inputAttendanceUpdateCrew(attendance);
-            LocalDateTime updateDateTime = iteratorInputHandler.inputAttendanceUpdateDateTime(dateTime.toLocalDate(),
+            Crew crew = inputHandler.inputAttendanceUpdateCrew(attendance);
+            LocalDateTime updateDateTime = inputHandler.inputAttendanceUpdateDateTime(dateTime.toLocalDate(),
                     campus);
             AttendanceUpdateResponse attendanceUpdateResponse = attendance.updateAttendance(crew, updateDateTime);
             outputView.printAttendanceUpdateResponse(attendanceUpdateResponse);
         }
 
         if (menu == Menu.ATTENDANCE_READ) {
-            Crew crew = iteratorInputHandler.inputAttendanceCheckCrew(attendance);
+            Crew crew = inputHandler.inputAttendanceCheckCrew(attendance);
             AttendanceHistory attendanceHistory = attendance.getAttendanceHistory(
                     crew,
                     dateTime.getYear(),

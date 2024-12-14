@@ -18,21 +18,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class IteratorInputHandler {
+public class InputHandler {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private final InputView inputView;
-    private final IteratorInputTemplate iteratorInputTemplate;
+    private final InputTemplate inputTemplate;
 
-    public IteratorInputHandler(InputView inputView, IteratorInputTemplate iteratorInputTemplate) {
+    public InputHandler(InputView inputView, InputTemplate inputTemplate) {
         this.inputView = inputView;
-        this.iteratorInputTemplate = iteratorInputTemplate;
+        this.inputTemplate = inputTemplate;
     }
 
     public Menu inputMenu(LocalDateTime dateTime) {
         StringToMenuConverter converter = new StringToMenuConverter();
-        return iteratorInputTemplate.execute(
+        return inputTemplate.execute(
                 inputView::inputMenu,
                 (value) -> {
                     Menu menu = converter.convert(value);
@@ -44,7 +44,7 @@ public class IteratorInputHandler {
     }
 
     public Crew inputCrew(Attendance attendance, LocalDate date) {
-        return iteratorInputTemplate.execute(
+        return inputTemplate.execute(
                 inputView::inputCrewName,
                 value -> {
                     Crew crew = new Crew(value);
@@ -55,7 +55,7 @@ public class IteratorInputHandler {
     }
 
     public LocalDateTime inputGoingSchoolDateTime(LocalDate currentDate, Campus campus) {
-        return iteratorInputTemplate.execute(
+        return inputTemplate.execute(
                 inputView::inputGoingSchoolTime,
                 value -> {
                     try {
@@ -71,7 +71,7 @@ public class IteratorInputHandler {
     }
 
     public Crew inputAttendanceUpdateCrew(Attendance attendance) {
-        return iteratorInputTemplate.execute(
+        return inputTemplate.execute(
                 inputView::inputAttendanceUpdateCrewName,
                 value -> {
                     Crew crew = new Crew(value);
@@ -83,7 +83,7 @@ public class IteratorInputHandler {
 
     public LocalDateTime inputAttendanceUpdateDateTime(LocalDate currentDate, Campus campus) {
         LocalDate updateDate = inputAttendanceUpdateDayInMonth(currentDate);
-        return iteratorInputTemplate.execute(
+        return inputTemplate.execute(
                 inputView::inputAttendanceUpdateTime,
                 value -> {
                     try {
@@ -99,7 +99,7 @@ public class IteratorInputHandler {
     }
 
     public Crew inputAttendanceCheckCrew(Attendance attendance) {
-        return iteratorInputTemplate.execute(
+        return inputTemplate.execute(
                 inputView::inputCrewName,
                 value -> {
                     Crew crew = new Crew(value);
@@ -110,7 +110,7 @@ public class IteratorInputHandler {
     }
 
     private LocalDate inputAttendanceUpdateDayInMonth(LocalDate currentDate) {
-        return iteratorInputTemplate.execute(
+        return inputTemplate.execute(
                 inputView::inputAttendanceUpdateDayInMonth,
                 value -> {
                     try {
