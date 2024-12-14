@@ -7,7 +7,14 @@ public class Crew {
     private final String name;
 
     public Crew(String name) {
-        this.name = name;
+        validateName(name);
+        this.name = name.trim();
+    }
+
+    public void validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("이름을 작성하세요.");
+        }
     }
 
     @Override

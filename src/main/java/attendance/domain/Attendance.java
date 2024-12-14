@@ -11,4 +11,10 @@ public class Attendance {
     public Attendance(Map<Crew, List<LocalDateTime>> attendances) {
         this.attendances = attendances;
     }
+
+    public void validateCrew(Crew crew) {
+        if (!attendances.containsKey(crew)) {
+            throw new IllegalArgumentException("등록되지 않은 닉네임입니다.");
+        }
+    }
 }

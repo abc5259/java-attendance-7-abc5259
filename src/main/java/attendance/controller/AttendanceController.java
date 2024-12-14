@@ -1,6 +1,7 @@
 package attendance.controller;
 
 import attendance.domain.Attendance;
+import attendance.domain.Crew;
 import attendance.domain.Menu;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
@@ -22,7 +23,9 @@ public class AttendanceController {
         LocalDateTime dateTime = getDateTime();
         outputView.printHelloMessage(dateTime);
         Menu menu = iteratorInputHandler.inputMenu(dateTime);
-
+        if (menu == Menu.ATTENDANCE_INSERT) {
+            Crew crew = iteratorInputHandler.inputCrew(attendance);
+        }
     }
 
     private LocalDateTime getDateTime() {
