@@ -5,9 +5,11 @@ import static attendance.domain.Menu.ATTENDANCE_UPDATE;
 
 import attendance.converter.StringToMenuConverter;
 import attendance.domain.Attendance;
+import attendance.domain.Campus;
 import attendance.domain.Crew;
 import attendance.domain.Holiday;
 import attendance.domain.Menu;
+import attendance.domain.Time;
 import attendance.utils.DayUtils;
 import attendance.view.InputView;
 import java.time.DateTimeException;
@@ -52,13 +54,15 @@ public class IteratorInputHandler {
         );
     }
 
-    public LocalDateTime inputGoingSchoolDateTime(LocalDate currentDate) {
+    public LocalDateTime inputGoingSchoolDateTime(LocalDate currentDate, Campus campus) {
         return iteratorInputTemplate.execute(
                 inputView::inputGoingSchoolTime,
                 value -> {
                     try {
-                        return LocalDateTime.parse(
+                        LocalDateTime dateTime = LocalDateTime.parse(
                                 currentDate.toString() + " " + value.trim(), DATE_TIME_FORMATTER);
+                        campus.validateCampusTime(new Time(dateTime.getHour(), dateTime.getMinute()));
+                        return dateTime;
                     } catch (DateTimeException exception) {
                         throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
                     }
@@ -77,14 +81,16 @@ public class IteratorInputHandler {
         );
     }
 
-    public LocalDateTime inputAttendanceUpdateDateTime(LocalDate currentDate) {
+    public LocalDateTime inputAttendanceUpdateDateTime(LocalDate currentDate, Campus campus) {
         LocalDate updateDate = inputAttendanceUpdateDayInMonth(currentDate);
         return iteratorInputTemplate.execute(
                 inputView::inputAttendanceUpdateTime,
                 value -> {
                     try {
-                        return LocalDateTime.parse(
+                        LocalDateTime updateDateTime = LocalDateTime.parse(
                                 updateDate.toString() + " " + value.trim(), DATE_TIME_FORMATTER);
+                        campus.validateCampusTime(new Time(updateDateTime.getHour(), updateDateTime.getMinute()));
+                        return updateDateTime;
                     } catch (DateTimeException dateTimeException) {
                         throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
                     }
