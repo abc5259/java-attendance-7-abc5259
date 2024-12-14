@@ -44,6 +44,7 @@ public class OutputView {
                 dateTime.getMinute(),
                 toMessageAttendanceState(attendanceState)
         );
+        printEmptyLine();
     }
 
     private void printEmptyLine() {
@@ -76,9 +77,11 @@ public class OutputView {
                 updateAttendanceResult.dateTime().getMinute(),
                 toMessageAttendanceState(updateAttendanceResult.attendanceState())
         );
+        printEmptyLine();
     }
 
     public void printAttendanceHistory(AttendanceHistory attendanceHistory, Subject subject) {
+        printEmptyLine();
         List<AttendanceResult> attendanceResults = attendanceHistory.getAttendanceResults();
         System.out.println("이번 달 빙티의 출석 기록입니다.");
         printEmptyLine();
@@ -116,6 +119,7 @@ public class OutputView {
         }
 
         System.out.printf("%s 대상자입니다.%n", subject.getName());
+        printEmptyLine();
     }
 
     public void printWeedingSubjectCrews(WeedingSubjectCrews weedingSubjectCrews) {
