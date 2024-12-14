@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class AttendanceInit {
 
+    private static final String DELIMITER = ",";
+    private static final int SPLIT_SIZE = 2;
     private static final Path ATTENDANCE_PATH = Path.of("src/main/resources/attendances.csv");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -25,8 +27,8 @@ public class AttendanceInit {
         List<String> lines = fileReader.readAllLines(ATTENDANCE_PATH);
         Map<Crew, List<LocalDateTime>> attendances = new LinkedHashMap<>();
         for (String line : lines) {
-            String[] sources = line.split(",");
-            if (sources.length != 2) {
+            String[] sources = line.split(DELIMITER);
+            if (sources.length != SPLIT_SIZE) {
                 throw new IllegalArgumentException("잘못된 파일 형식입니다.");
             }
             Crew crew = new Crew(sources[0].trim());

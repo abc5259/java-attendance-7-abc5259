@@ -1,6 +1,9 @@
 package attendance.domain;
 
 public class WeedingSubjectCrew implements Comparable<WeedingSubjectCrew> {
+
+    private static final int LATE_ABSENT_COUNT = 3;
+
     private final Crew crew;
     private final int lateCount;
     private final int absenceCount;
@@ -31,7 +34,7 @@ public class WeedingSubjectCrew implements Comparable<WeedingSubjectCrew> {
     }
 
     public int calculateAbsenceCount() {
-        return getLateCount() / 3 + getAbsenceCount();
+        return getLateCount() / LATE_ABSENT_COUNT + getAbsenceCount();
     }
 
     @Override

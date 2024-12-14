@@ -2,6 +2,8 @@ package attendance.domain;
 
 public class SubjectCalculator {
 
+    private static final int LATE_ABSENT_COUNT = 3;
+
     private final AttendanceHistory attendanceHistory;
 
     public SubjectCalculator(AttendanceHistory attendanceHistory) {
@@ -9,7 +11,7 @@ public class SubjectCalculator {
     }
 
     public Subject calculateSubject() {
-        int totalAbsence = attendanceHistory.totalLate() / 3 + attendanceHistory.totalAbsence();
+        int totalAbsence = attendanceHistory.totalLate() / LATE_ABSENT_COUNT + attendanceHistory.totalAbsence();
         if (totalAbsence > 5) {
             return Subject.WEEDING;
         }
@@ -24,6 +26,4 @@ public class SubjectCalculator {
 
         return Subject.NONE;
     }
-
-
 }
