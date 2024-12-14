@@ -40,10 +40,7 @@ public class WeedingSubjectCrew implements Comparable<WeedingSubjectCrew> {
         int otherAbsenceCount = o.calculateAbsenceCount();
 
         if (absenceCount == otherAbsenceCount) {
-            if (lateCount == o.lateCount) {
-                return getCrewName().compareTo(o.getCrewName());
-            }
-            return o.lateCount - lateCount;
+            return getCrewName().compareTo(o.getCrewName());
         }
         return o.absenceCount - otherAbsenceCount;
     }
