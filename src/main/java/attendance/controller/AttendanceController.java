@@ -5,6 +5,8 @@ import attendance.domain.Menu;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class AttendanceController {
 
@@ -17,9 +19,15 @@ public class AttendanceController {
     }
 
     public void process(Attendance attendance) {
-        LocalDate localDate = DateTimes.now().toLocalDate();
-        outputView.printHelloMessage(localDate);
+        LocalDateTime dateTime = getDateTime();
+        outputView.printHelloMessage(dateTime);
+        Menu menu = iteratorInputHandler.inputMenu(dateTime);
 
-        Menu menu = iteratorInputHandler.inputMenu();
+    }
+
+    private LocalDateTime getDateTime() {
+        LocalDate localDate = DateTimes.now().toLocalDate();
+        LocalTime localTime = DateTimes.now().toLocalTime();
+        return LocalDateTime.of(localDate, localTime);
     }
 }
