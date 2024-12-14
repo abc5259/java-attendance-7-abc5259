@@ -29,15 +29,12 @@ public class AttendanceInit {
             if (sources.length != 2) {
                 throw new IllegalArgumentException("잘못된 파일 형식입니다.");
             }
-
             Crew crew = new Crew(sources[0].trim());
             LocalDateTime localDateTime = LocalDateTime.parse(sources[1].trim(), DATE_TIME_FORMATTER);
-
             List<LocalDateTime> localDateTimes = attendances.getOrDefault(crew, new ArrayList<>());
             localDateTimes.add(localDateTime);
             attendances.put(crew, localDateTimes);
         }
-
         return new Attendance(attendances);
     }
 }

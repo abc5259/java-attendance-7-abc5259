@@ -34,9 +34,6 @@ public class WeedingSubjectCrew implements Comparable<WeedingSubjectCrew> {
         return getLateCount() / 3 + getAbsenceCount();
     }
 
-    // 제적 위험자는 제적 대상자, 면담 대상자, 경고 대상자순으로 출력하며,
-    // 대상 항목별 정렬 순서는 지각을 결석으로 간주하여 내림차순한다. 출석 상태가 같으면 닉네임으로 오름차순 정렬한다.
-
     @Override
     public int compareTo(WeedingSubjectCrew o) {
         int absenceCount = calculateAbsenceCount();
