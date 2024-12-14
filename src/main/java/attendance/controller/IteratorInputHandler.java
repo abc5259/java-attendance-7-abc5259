@@ -1,5 +1,7 @@
 package attendance.controller;
 
+import attendance.converter.StringToMenuConverter;
+import attendance.domain.Menu;
 import attendance.view.InputView;
 
 public class IteratorInputHandler {
@@ -12,5 +14,11 @@ public class IteratorInputHandler {
         this.iteratorInputTemplate = iteratorInputTemplate;
     }
 
+    public Menu inputMenu() {
+        return iteratorInputTemplate.execute(
+                inputView::inputMenu,
+                new StringToMenuConverter()
+        );
+    }
 
 }
