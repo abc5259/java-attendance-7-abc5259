@@ -98,6 +98,17 @@ public class IteratorInputHandler {
         );
     }
 
+    public Crew inputAttendanceCheckCrew(Attendance attendance) {
+        return iteratorInputTemplate.execute(
+                inputView::inputCrewName,
+                value -> {
+                    Crew crew = new Crew(value);
+                    attendance.validateContainsCrew(crew);
+                    return crew;
+                }
+        );
+    }
+
     private LocalDate inputAttendanceUpdateDayInMonth(LocalDate currentDate) {
         return iteratorInputTemplate.execute(
                 inputView::inputAttendanceUpdateDayInMonth,

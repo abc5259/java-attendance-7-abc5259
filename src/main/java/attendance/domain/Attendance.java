@@ -1,9 +1,13 @@
 package attendance.domain;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Attendance {
@@ -52,11 +56,60 @@ public class Attendance {
         );
     }
 
-    private LocalDateTime findDateTime(LocalDateTime updateDateTime, List<LocalDateTime> dateTimes) {
+    public AttendanceHistory getAttendanceHistory(Crew crew, int year, int month, LocalDate lastDate) {
+        List<LocalDateTime> dateTimes = attendances.get(crew);
+        List<AttendanceResult> attendanceResults = new ArrayList<>();
+        LocalDate currDate = LocalDate.of(year, month, 1);
+        System.out.println(currDate + " " + lastDate);
+        while (currDate.isBefore(lastDate) || currDate.isEqual(lastDate)) {
+            if (isHoliday(currDate)) {
+                currDate = currDate.plusDays(1);
+                continue;
+            }
+
+            Optional<LocalDateTime> attendanceDateTime = findOptionalDateTime(currDate, dateTimes);
+            addAttendanceResult(attendanceDateTime, attendanceResults, currDate);
+            currDate = currDate.plusDays(1);
+        }
+
+        return new AttendanceHistory(attendanceResults);
+    }
+
+    private boolean isHoliday(LocalDate currDate) {
+        return currDate.getDayOfWeek() == DayOfWeek.SATURDAY ||
+                currDate.getDayOfWeek() == DayOfWeek.SUNDAY ||
+                Holiday.contains(currDate);
+    }
+
+    private void addAttendanceResult(Optional<LocalDateTime> attendanceDateTime,
+                                     List<AttendanceResult> attendanceResults,
+                                     LocalDate currDate) {
+        if (attendanceDateTime.isPresent()) {
+            attendanceResults.add(
+                    new AttendanceResult(attendanceDateTime.get(),
+                            Late.calculateAttendanceState(attendanceDateTime.get())));
+            return;
+        }
+
+        attendanceResults.add(
+                new AttendanceResult(
+                        LocalDateTime.of(currDate, LocalTime.MIN),
+                        AttendanceState.ABSENCE
+                )
+        );
+    }
+
+    private LocalDateTime findDateTime(LocalDateTime findDateTime, List<LocalDateTime> dateTimes) {
         return dateTimes.stream()
-                .filter(dateTime -> dateTime.toLocalDate().isEqual(updateDateTime.toLocalDate()))
+                .filter(dateTime -> dateTime.toLocalDate().isEqual(findDateTime.toLocalDate()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 요일이 없습니다."));
+    }
+
+    private Optional<LocalDateTime> findOptionalDateTime(LocalDate findDate, List<LocalDateTime> dateTimes) {
+        return dateTimes.stream()
+                .filter(dateTime -> dateTime.toLocalDate().isEqual(findDate))
+                .findFirst();
     }
 
     private boolean isAlreadyAttendance(LocalDate date, List<LocalDateTime> dateTimes) {

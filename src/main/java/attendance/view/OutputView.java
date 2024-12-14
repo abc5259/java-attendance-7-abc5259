@@ -1,17 +1,20 @@
 package attendance.view;
 
+import attendance.domain.AttendanceHistory;
 import attendance.domain.AttendanceResult;
 import attendance.domain.AttendanceState;
 import attendance.domain.AttendanceUpdateResponse;
 import attendance.utils.DayUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class OutputView {
 
     private static final String HELLO_MESSAGE_FORMAT = "오늘은 %d월 %02d일 %s입니다. 기능을 선택해 주세요.%n";
     private static final String ERROR_MESSAGE_FORMAT = "[ERROR] %s%n";
     private static final String ATTENDANCE_STATE_FORMAT = "%d월 %02d일 %s %02d:%02d (%s)%n";
+    private static final String ATTENDANCE_ABSENCE_STATE_FORMAT = "%d월 %02d일 %s --:-- (결석)%n";
     private static final String ATTENDANCE_UPDATE_STATE_FORMAT = "%d월 %02d일 %s %02d:%02d (%s) -> %02d:%02d (%s) 수정 완료!%n";
 
     public void printHelloMessage(LocalDateTime dateTime) {
@@ -68,5 +71,40 @@ public class OutputView {
                 updateAttendanceResult.dateTime().getMinute(),
                 toMessageAttendanceState(updateAttendanceResult.attendanceState())
         );
+    }
+
+    public void printAttendanceHistory(AttendanceHistory attendanceHistory) {
+        List<AttendanceResult> attendanceResults = attendanceHistory.getAttendanceResults();
+        System.out.println("이번 달 빙티의 출석 기록입니다.");
+        printEmptyLine();
+        attendanceResults.forEach(attendanceResult -> {
+            LocalDateTime dateTime = attendanceResult.dateTime();
+            AttendanceState attendanceState = attendanceResult.attendanceState();
+
+            if (attendanceState == AttendanceState.ABSENCE) {
+                System.out.printf(
+                        ATTENDANCE_ABSENCE_STATE_FORMAT,
+                        dateTime.getMonth().getValue(),
+                        dateTime.getDayOfMonth(),
+                        DayUtils.toKorDayOfWeek(dateTime.getDayOfWeek()));
+                return;
+            }
+            System.out.printf(
+                    ATTENDANCE_STATE_FORMAT,
+                    dateTime.getMonth().getValue(),
+                    dateTime.getDayOfMonth(),
+                    DayUtils.toKorDayOfWeek(dateTime.getDayOfWeek()),
+                    dateTime.getHour(),
+                    dateTime.getMinute(),
+                    toMessageAttendanceState(attendanceState)
+            );
+        });
+
+        printEmptyLine();
+        System.out.printf("출석: %d회%n", attendanceHistory.totalAttendance());
+        System.out.printf("지각: %d회%n", attendanceHistory.totalLate());
+        System.out.printf("결석: %d회%n", attendanceHistory.totalAbsence());
+
+
     }
 }

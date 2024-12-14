@@ -1,6 +1,7 @@
 package attendance.controller;
 
 import attendance.domain.Attendance;
+import attendance.domain.AttendanceHistory;
 import attendance.domain.AttendanceState;
 import attendance.domain.AttendanceUpdateResponse;
 import attendance.domain.Campus;
@@ -36,6 +37,16 @@ public class AttendanceController {
                     campus);
             AttendanceUpdateResponse attendanceUpdateResponse = attendance.updateAttendance(crew, updateDateTime);
             outputView.printAttendanceUpdateResponse(attendanceUpdateResponse);
+        }
+
+        if (menu == Menu.ATTENDANCE_READ) {
+            Crew crew = iteratorInputHandler.inputAttendanceCheckCrew(attendance);
+            AttendanceHistory attendanceHistory = attendance.getAttendanceHistory(
+                    crew,
+                    dateTime.getYear(),
+                    dateTime.getMonthValue(),
+                    dateTime.toLocalDate());
+            outputView.printAttendanceHistory(attendanceHistory);
         }
     }
 }
