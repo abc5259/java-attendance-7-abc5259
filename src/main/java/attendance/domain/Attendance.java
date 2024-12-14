@@ -1,8 +1,5 @@
 package attendance.domain;
 
-import static attendance.domain.AttendanceState.GOOD;
-import static attendance.domain.AttendanceState.LATE;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,10 +29,7 @@ public class Attendance {
 
         int hour = attendanceDatTime.getHour();
         int minute = attendanceDatTime.getMinute();
-        if (Late.isLate(attendanceDatTime.getDayOfWeek(), new Time(hour, minute))) {
-            return LATE;
-        }
-        return GOOD;
+        return Late.calculateAttendanceState(attendanceDatTime.getDayOfWeek(), new Time(hour, minute));
     }
 
     private boolean isAlreadyAttendance(LocalDate date, List<LocalDateTime> dateTimes) {

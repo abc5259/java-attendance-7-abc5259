@@ -43,6 +43,9 @@ public class OutputView {
         if (attendanceState == AttendanceState.LATE) {
             return "지각";
         }
+        if (attendanceState == AttendanceState.ABSENCE) {
+            return "결석";
+        }
         return "출석";
     }
 }

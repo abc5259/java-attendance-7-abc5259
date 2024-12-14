@@ -27,4 +27,16 @@ public record Time(
 
         return false;
     }
+
+    public boolean isAfter(Time time) {
+        if (this.hour > time.hour) {
+            return true;
+        }
+
+        if (this.hour == time.hour && this.minute > time.minute) {
+            return true;
+        }
+
+        return false;
+    }
 }

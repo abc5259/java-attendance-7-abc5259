@@ -1,5 +1,5 @@
 package attendance.domain;
 
 public enum AttendanceState {
-    LATE, GOOD
+    LATE, GOOD, ABSENCE
 }
