@@ -34,39 +34,55 @@ public class AttendanceController {
 
     private void run(Attendance attendance, LocalDateTime dateTime, Menu menu, Campus campus) {
         if (menu == Menu.ATTENDANCE_INSERT) {
-            Crew crew = inputHandler.inputCrew(attendance, dateTime.toLocalDate());
-            LocalDateTime goingSchoolDateTIme = inputHandler.inputGoingSchoolDateTime(dateTime.toLocalDate(),
-                    campus);
-            AttendanceState attendanceState = attendance.attendanceCrew(crew, goingSchoolDateTIme);
-            outputView.printAttendanceState(goingSchoolDateTIme, attendanceState);
+            runAttendanceInsert(attendance, dateTime, campus);
         }
         if (menu == Menu.ATTENDANCE_UPDATE) {
-            Crew crew = inputHandler.inputAttendanceUpdateCrew(attendance);
-            LocalDateTime updateDateTime = inputHandler.inputAttendanceUpdateDateTime(dateTime.toLocalDate(),
-                    campus);
-            AttendanceUpdateResponse attendanceUpdateResponse = attendance.updateAttendance(crew, updateDateTime);
-            outputView.printAttendanceUpdateResponse(attendanceUpdateResponse);
+            runAttendanceUpdate(attendance, dateTime, campus);
         }
 
         if (menu == Menu.ATTENDANCE_READ) {
-            LocalDateTime yesterday = dateTime.minusDays(1);
-            Crew crew = inputHandler.inputAttendanceCheckCrew(attendance);
-            AttendanceHistory attendanceHistory = attendance.getAttendanceHistory(
-                    crew,
-                    yesterday.getYear(),
-                    yesterday.getMonthValue(),
-                    yesterday.toLocalDate());
-            SubjectCalculator subjectCalculator = new SubjectCalculator(attendanceHistory);
-            outputView.printAttendanceHistory(attendanceHistory, subjectCalculator.calculateSubject());
+            runAttendanceRead(attendance, dateTime);
         }
 
         if (menu == Menu.RISK_CREW_READ) {
-            LocalDateTime yesterday = dateTime.minusDays(1);
-            WeedingSubjectCrews weedingSubjectCrews = attendance.getWeedingSubjectCrews(
-                    yesterday.getYear(),
-                    yesterday.getMonthValue(),
-                    yesterday.toLocalDate());
-            outputView.printWeedingSubjectCrews(weedingSubjectCrews);
+            runRiskCrewRead(attendance, dateTime);
         }
+    }
+
+    private void runAttendanceInsert(Attendance attendance, LocalDateTime dateTime, Campus campus) {
+        Crew crew = inputHandler.inputCrew(attendance, dateTime.toLocalDate());
+        LocalDateTime goingSchoolDateTIme = inputHandler.inputGoingSchoolDateTime(dateTime.toLocalDate(),
+                campus);
+        AttendanceState attendanceState = attendance.attendanceCrew(crew, goingSchoolDateTIme);
+        outputView.printAttendanceState(goingSchoolDateTIme, attendanceState);
+    }
+
+    private void runAttendanceUpdate(Attendance attendance, LocalDateTime dateTime, Campus campus) {
+        Crew crew = inputHandler.inputAttendanceUpdateCrew(attendance);
+        LocalDateTime updateDateTime = inputHandler.inputAttendanceUpdateDateTime(dateTime.toLocalDate(),
+                campus);
+        AttendanceUpdateResponse attendanceUpdateResponse = attendance.updateAttendance(crew, updateDateTime);
+        outputView.printAttendanceUpdateResponse(attendanceUpdateResponse);
+    }
+
+    private void runAttendanceRead(Attendance attendance, LocalDateTime dateTime) {
+        LocalDateTime yesterday = dateTime.minusDays(1);
+        Crew crew = inputHandler.inputAttendanceCheckCrew(attendance);
+        AttendanceHistory attendanceHistory = attendance.getAttendanceHistory(
+                crew,
+                yesterday.getYear(),
+                yesterday.getMonthValue(),
+                yesterday.toLocalDate());
+        SubjectCalculator subjectCalculator = new SubjectCalculator(attendanceHistory);
+        outputView.printAttendanceHistory(attendanceHistory, subjectCalculator.calculateSubject());
+    }
+
+    private void runRiskCrewRead(Attendance attendance, LocalDateTime dateTime) {
+        LocalDateTime yesterday = dateTime.minusDays(1);
+        WeedingSubjectCrews weedingSubjectCrews = attendance.getWeedingSubjectCrews(
+                yesterday.getYear(),
+                yesterday.getMonthValue(),
+                yesterday.toLocalDate());
+        outputView.printWeedingSubjectCrews(weedingSubjectCrews);
     }
 }
