@@ -12,6 +12,6 @@ public class Application {
 
         Attendance attendance = attendanceInit.init();
         AttendanceController attendanceController = attendanceConfig.attendanceController();
-        attendanceController.process();
+        attendanceController.process(attendance);
     }
 }

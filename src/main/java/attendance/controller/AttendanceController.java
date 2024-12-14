@@ -1,6 +1,9 @@
 package attendance.controller;
 
+import attendance.domain.Attendance;
 import attendance.view.OutputView;
+import camp.nextstep.edu.missionutils.DateTimes;
+import java.time.LocalDate;
 
 public class AttendanceController {
 
@@ -12,7 +15,8 @@ public class AttendanceController {
         this.outputView = outputView;
     }
 
-    public void process() {
-
+    public void process(Attendance attendance) {
+        LocalDate localDate = DateTimes.now().toLocalDate();
+        outputView.printHelloMessage(localDate);
     }
 }
