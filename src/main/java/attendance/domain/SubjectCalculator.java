@@ -9,7 +9,7 @@ public class SubjectCalculator {
     }
 
     public Subject calculateSubject() {
-        int totalAbsence = attendanceHistory.totalLate() / 3 + attendanceHistory.totalAttendance();
+        int totalAbsence = attendanceHistory.totalLate() / 3 + attendanceHistory.totalAbsence();
         if (totalAbsence > 5) {
             return Subject.WEEDING;
         }
@@ -24,4 +24,6 @@ public class SubjectCalculator {
 
         return Subject.NONE;
     }
+
+
 }

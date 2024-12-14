@@ -5,9 +5,11 @@ import attendance.domain.AttendanceResult;
 import attendance.domain.AttendanceState;
 import attendance.domain.AttendanceUpdateResponse;
 import attendance.domain.Subject;
+import attendance.domain.WeedingSubjectCrews;
 import attendance.utils.DayUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class OutputView {
@@ -82,7 +84,7 @@ public class OutputView {
             LocalDateTime dateTime = attendanceResult.dateTime();
             AttendanceState attendanceState = attendanceResult.attendanceState();
 
-            if (attendanceState == AttendanceState.ABSENCE) {
+            if (attendanceState == AttendanceState.ABSENCE && dateTime.toLocalTime().equals(LocalTime.MIN)) {
                 System.out.printf(
                         ATTENDANCE_ABSENCE_STATE_FORMAT,
                         dateTime.getMonth().getValue(),
@@ -112,5 +114,19 @@ public class OutputView {
         }
 
         System.out.printf("%s 대상자입니다.%n", subject.getName());
+    }
+
+    public void printWeedingSubjectCrews(WeedingSubjectCrews weedingSubjectCrews) {
+        printEmptyLine();
+        System.out.println("제적 위험자 조회 결과");
+        weedingSubjectCrews.getWeedingSubjectCrews().forEach(
+                weedingSubjectCrew -> {
+                    System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)%n",
+                            weedingSubjectCrew.getCrewName(),
+                            weedingSubjectCrew.getAbsenceCount(),
+                            weedingSubjectCrew.getLateCount(),
+                            weedingSubjectCrew.getSubject().getName());
+                }
+        );
     }
 }

@@ -60,7 +60,6 @@ public class Attendance {
         List<LocalDateTime> dateTimes = attendances.get(crew);
         List<AttendanceResult> attendanceResults = new ArrayList<>();
         LocalDate currDate = LocalDate.of(year, month, 1);
-        System.out.println(currDate + " " + lastDate);
         while (currDate.isBefore(lastDate) || currDate.isEqual(lastDate)) {
             if (isHoliday(currDate)) {
                 currDate = currDate.plusDays(1);
@@ -73,6 +72,24 @@ public class Attendance {
         }
 
         return new AttendanceHistory(attendanceResults);
+    }
+
+    public WeedingSubjectCrews getWeedingSubjectCrews(int year, int month, LocalDate lastDate) {
+        List<WeedingSubjectCrew> weedingSubjectCrews = new ArrayList<>();
+        attendances.forEach((crew, history) -> {
+            AttendanceHistory attendanceHistory = getAttendanceHistory(crew, year, month, lastDate);
+            SubjectCalculator subjectCalculator = new SubjectCalculator(attendanceHistory);
+            Subject subject = subjectCalculator.calculateSubject();
+            if (subject != Subject.NONE) {
+                weedingSubjectCrews.add(new WeedingSubjectCrew(
+                        crew,
+                        attendanceHistory.totalLate(),
+                        attendanceHistory.totalAbsence(),
+                        subject
+                ));
+            }
+        });
+        return new WeedingSubjectCrews(weedingSubjectCrews);
     }
 
     private boolean isHoliday(LocalDate currDate) {

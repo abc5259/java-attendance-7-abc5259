@@ -16,7 +16,7 @@ public class DayUtils {
             return "월요일";
         }
         if (dayOfWeek == TUESDAY) {
-            return "회요일";
+            return "화요일";
         }
         if (dayOfWeek == WEDNESDAY) {
             return "수요일";

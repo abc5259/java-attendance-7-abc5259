@@ -16,7 +16,6 @@ public class Application {
 
         Attendance attendance = attendanceInit.init();
         AttendanceController attendanceController = attendanceConfig.attendanceController();
-        LocalDateTime localDateTime = LocalDateTime.of(2024, 12, 13, 14, 2);
         attendanceController.process(attendance, getDateTime());
     }
 

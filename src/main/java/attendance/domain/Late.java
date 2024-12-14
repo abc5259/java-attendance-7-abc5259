@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public enum Late {
-    MON_LATE(DayOfWeek.MONDAY, new Time(13, 6), new Time(18, 0)),
-    TUE_LATE(DayOfWeek.TUESDAY, new Time(10, 6), new Time(18, 0)),
-    WED_LATE(DayOfWeek.WEDNESDAY, new Time(10, 6), new Time(18, 0)),
-    TUR_LATE(DayOfWeek.THURSDAY, new Time(10, 6), new Time(18, 0)),
-    FRI_LATE(DayOfWeek.FRIDAY, new Time(10, 6), new Time(18, 0));
+    MON_LATE(DayOfWeek.MONDAY, new Time(13, 6), new Time(13, 30)),
+    TUE_LATE(DayOfWeek.TUESDAY, new Time(10, 6), new Time(10, 30)),
+    WED_LATE(DayOfWeek.WEDNESDAY, new Time(10, 6), new Time(10, 30)),
+    TUR_LATE(DayOfWeek.THURSDAY, new Time(10, 6), new Time(10, 30)),
+    FRI_LATE(DayOfWeek.FRIDAY, new Time(10, 6), new Time(10, 30));
 
     private final DayOfWeek dayOfWeek;
     private final Time startTime;
