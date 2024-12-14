@@ -8,6 +8,7 @@ import attendance.domain.Attendance;
 import attendance.domain.Crew;
 import attendance.domain.Menu;
 import attendance.view.InputView;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class IteratorInputHandler {
@@ -33,12 +34,12 @@ public class IteratorInputHandler {
         );
     }
 
-    public Crew inputCrew(Attendance attendance) {
+    public Crew inputCrew(Attendance attendance, LocalDate date) {
         return iteratorInputTemplate.execute(
                 inputView::inputCrewName,
                 value -> {
                     Crew crew = new Crew(value);
-                    attendance.validateCrew(crew);
+                    attendance.validateAttendanceCrew(crew, date);
                     return crew;
                 }
         );

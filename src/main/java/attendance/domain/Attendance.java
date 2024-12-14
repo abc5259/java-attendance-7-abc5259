@@ -1,5 +1,6 @@
 package attendance.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,18 @@ public class Attendance {
         this.attendances = attendances;
     }
 
-    public void validateCrew(Crew crew) {
+    public void validateAttendanceCrew(Crew crew, LocalDate date) {
         if (!attendances.containsKey(crew)) {
             throw new IllegalArgumentException("등록되지 않은 닉네임입니다.");
         }
+
+        List<LocalDateTime> dateTimes = attendances.get(crew);
+        if (isAlreadyAttendance(date, dateTimes)) {
+            throw new IllegalArgumentException("이미 출석을 확인하였습니다. 필요한 경우 수정 기능을 이용해 주세요.");
+        }
+    }
+
+    private boolean isAlreadyAttendance(LocalDate date, List<LocalDateTime> dateTimes) {
+        return dateTimes.stream().anyMatch(dateTime -> dateTime.toLocalDate().isEqual(date));
     }
 }
