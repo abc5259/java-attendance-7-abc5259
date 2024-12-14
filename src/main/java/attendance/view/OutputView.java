@@ -22,6 +22,7 @@ public class OutputView {
     private static final String ATTENDANCE_ABSENCE_STATE_FORMAT = "%d월 %02d일 %s --:-- (결석)%n";
     private static final String ATTENDANCE_UPDATE_STATE_FORMAT = "%d월 %02d일 %s %02d:%02d (%s) -> %02d:%02d (%s) 수정 완료!%n";
     private static final String ABSENCE_ATTENDANCE_UPDATE_STATE_FORMAT = "%d월 %02d일 %s --:-- (결석) -> %02d:%02d (%s) 수정 완료!%n";
+    private static final String WEEDING_SUBJECT_NAME_FORMAT = "- %s: 결석 %d회, 지각 %d회 (%s)%n";
 
     public void printHelloMessage(LocalDateTime dateTime) {
 
@@ -143,7 +144,7 @@ public class OutputView {
         Collections.sort(weedingSubjectCrews1);
         weedingSubjectCrews1.forEach(
                 weedingSubjectCrew -> {
-                    System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)%n",
+                    System.out.printf(WEEDING_SUBJECT_NAME_FORMAT,
                             weedingSubjectCrew.getCrewName(),
                             weedingSubjectCrew.getAbsenceCount(),
                             weedingSubjectCrew.getLateCount(),
