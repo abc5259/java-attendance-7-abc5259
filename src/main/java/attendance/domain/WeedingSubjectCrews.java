@@ -1,6 +1,5 @@
 package attendance.domain;
 
-import java.util.Collections;
 import java.util.List;
 
 public class WeedingSubjectCrews {
@@ -11,6 +10,6 @@ public class WeedingSubjectCrews {
     }
 
     public List<WeedingSubjectCrew> getWeedingSubjectCrews() {
-        return Collections.unmodifiableList(weedingSubjectCrews);
+        return weedingSubjectCrews;
     }
 }

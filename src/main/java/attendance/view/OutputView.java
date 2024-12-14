@@ -5,11 +5,13 @@ import attendance.domain.AttendanceResult;
 import attendance.domain.AttendanceState;
 import attendance.domain.AttendanceUpdateResponse;
 import attendance.domain.Subject;
+import attendance.domain.WeedingSubjectCrew;
 import attendance.domain.WeedingSubjectCrews;
 import attendance.utils.DayUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 
 public class OutputView {
@@ -119,7 +121,10 @@ public class OutputView {
     public void printWeedingSubjectCrews(WeedingSubjectCrews weedingSubjectCrews) {
         printEmptyLine();
         System.out.println("제적 위험자 조회 결과");
-        weedingSubjectCrews.getWeedingSubjectCrews().forEach(
+
+        List<WeedingSubjectCrew> weedingSubjectCrews1 = weedingSubjectCrews.getWeedingSubjectCrews();
+        Collections.sort(weedingSubjectCrews1);
+        weedingSubjectCrews1.forEach(
                 weedingSubjectCrew -> {
                     System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)%n",
                             weedingSubjectCrew.getCrewName(),
@@ -128,5 +133,6 @@ public class OutputView {
                             weedingSubjectCrew.getSubject().getName());
                 }
         );
+        printEmptyLine();
     }
 }
