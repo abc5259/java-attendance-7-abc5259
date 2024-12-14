@@ -26,5 +26,8 @@ public class AttendanceController {
             AttendanceState attendanceState = attendance.attendanceCrew(crew, goingSchoolDateTIme);
             outputView.printAttendanceState(goingSchoolDateTIme, attendanceState);
         }
+        if (menu == Menu.ATTENDANCE_UPDATE) {
+            Crew crew = iteratorInputHandler.inputAttendanceUpdateCrew(attendance, dateTime.toLocalDate());
+        }
     }
 }

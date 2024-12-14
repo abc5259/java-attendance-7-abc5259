@@ -6,8 +6,11 @@ import static attendance.domain.Menu.ATTENDANCE_UPDATE;
 import attendance.converter.StringToMenuConverter;
 import attendance.domain.Attendance;
 import attendance.domain.Crew;
+import attendance.domain.Holiday;
 import attendance.domain.Menu;
+import attendance.utils.DayUtils;
 import attendance.view.InputView;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -63,23 +66,34 @@ public class IteratorInputHandler {
         );
     }
 
+    public Crew inputAttendanceUpdateCrew(Attendance attendance, LocalDate date) {
+        return iteratorInputTemplate.execute(
+                inputView::inputAttendanceUpdateCrewName,
+                value -> {
+                    Crew crew = new Crew(value);
+                    attendance.validateAttendanceCrew(crew, date);
+                    return crew;
+                }
+        );
+    }
+
     private void validateMenu(LocalDateTime dateTime, Menu menu) {
         if (menu != ATTENDANCE_INSERT && menu != ATTENDANCE_UPDATE) {
             return;
         }
 
-//        DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
-//        if (
-//                dayOfWeek == DayOfWeek.SATURDAY
-//                        || dayOfWeek == DayOfWeek.SUNDAY
-//                        || Holiday.contains(dateTime.toLocalDate()
-//                )
-//        ) {
-//            throw new IllegalArgumentException(String.format("%d월 %d일 %s은 등교일이 아닙니다.",
-//                    dateTime.getMonth().getValue(),
-//                    dateTime.getDayOfMonth(),
-//                    DayUtils.toKorDayOfWeek(dateTime.getDayOfWeek())));
-//        }
+        DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
+        if (
+                dayOfWeek == DayOfWeek.SATURDAY
+                        || dayOfWeek == DayOfWeek.SUNDAY
+                        || Holiday.contains(dateTime.toLocalDate()
+                )
+        ) {
+            throw new IllegalArgumentException(String.format("%d월 %d일 %s은 등교일이 아닙니다.",
+                    dateTime.getMonth().getValue(),
+                    dateTime.getDayOfMonth(),
+                    DayUtils.toKorDayOfWeek(dateTime.getDayOfWeek())));
+        }
     }
 
 }

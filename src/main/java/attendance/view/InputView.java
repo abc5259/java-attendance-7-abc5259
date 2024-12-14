@@ -11,6 +11,7 @@ public class InputView {
             + "Q. 종료";
     private static final String INPUT_CREW_NAME = "닉네임을 입력해 주세요.";
     private static final String INPUT_GOING_SCHOOL_TIME = "등교 시간을 입력해 주세요.";
+    private static final String INPUT_ATTENDANCE_UPDATE_CREW_NAME = "출석을 수정하려는 크루의 닉네임을 입력해 주세요.";
 
     public String inputMenu() {
         System.out.println(INPUT_MENU);
@@ -24,6 +25,11 @@ public class InputView {
 
     public String inputGoingSchoolTime() {
         System.out.println(INPUT_GOING_SCHOOL_TIME);
+        return Console.readLine();
+    }
+
+    public String inputAttendanceUpdateCrewName() {
+        System.out.println(INPUT_ATTENDANCE_UPDATE_CREW_NAME);
         return Console.readLine();
     }
 
